@@ -43,12 +43,28 @@ function getUrlForCode(code) {
   return code === '200' && window.location.pathname.match(/^\/?$/) ? '/' : `/${code}`;
 }
 
+function placeCursorAtEnd(el) {
+  const range = document.createRange();
+  const sel = window.getSelection();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
 function applyPayload(payload, httpStatus) {
   const code = payload.code;
   const desc = payload.description.includes(' - ')
     ? payload.description.split(' - ').slice(1).join(' - ')
     : payload.description;
-  statusCodeElement.textContent = code;
+
+  const isEditing = document.activeElement === statusCodeElement;
+  const currentCode = normalizeCode(statusCodeElement.textContent);
+  if (!isEditing || currentCode !== code) {
+    statusCodeElement.textContent = code;
+    if (isEditing) placeCursorAtEnd(statusCodeElement);
+  }
+
   document.body.className = bodyClassForStatus(httpStatus);
   tipElement.textContent = `${httpStatus} ${payload.phrase} - ${desc}`;
   httpStatusElement.textContent = `HTTP/1.1 ${httpStatus} ${payload.phrase}`;
@@ -133,12 +149,7 @@ statusCodeElement.addEventListener('input', () => {
 
   if (code !== statusCodeElement.textContent) {
     statusCodeElement.textContent = code;
-    const range = document.createRange();
-    const sel = window.getSelection();
-    range.selectNodeContents(statusCodeElement);
-    range.collapse(false);
-    sel.removeAllRanges();
-    sel.addRange(range);
+    placeCursorAtEnd(statusCodeElement);
   }
 
   if (code.length === 3 && code !== lastNavigatedCode) {
@@ -161,12 +172,14 @@ statusCodeElement.addEventListener('blur', () => {
   }
 });
 
-statusCodeElement.addEventListener('click', () => {
-  const selection = window.getSelection();
-  const range = document.createRange();
-  range.selectNodeContents(statusCodeElement);
-  selection.removeAllRanges();
-  selection.addRange(range);
+statusCodeElement.addEventListener('click', (e) => {
+  if (e.detail === 2) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(statusCodeElement);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
 });
 
 window.addEventListener('popstate', (e) => {
