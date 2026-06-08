@@ -1,82 +1,247 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-<meta charset="utf-8">
-<title>HTTP Status Pages</title>
-<style>
-body{font-family:sans-serif}
-li{margin:.4em 0}
-</style>
-<body>
-<h1>HTTP Status Pages</h1>
-<ul>
-<li><a href="100.html">100 Continue</a> 👍 クライアントは、このままリクエストの送信を続けてかまいません。</li>
-<li><a href="101.html">101 Switching Protocols</a> 🔄 サーバーは、クライアントが要求した通信プロトコルへ切り替えます。</li>
-<li><a href="102.html">102 Processing</a> 🛠️ サーバーはリクエストを受け取り、処理を続けています。</li>
-<li><a href="103.html">103 Early Hints</a> 💡 最終的なレスポンスの前に、関連リソースを先に読み込むための情報を返します。</li>
-<li><a href="104.html">104 Upload Resumption Supported</a> ⏫ サーバーは、途中で止まったアップロードの再開に対応しています。</li>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Status Code Puzzle</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<li><a href="200.html">200 OK</a> ✅ リクエストは正常に処理されました。</li>
-<li><a href="201.html">201 Created</a> 🆕 リクエストは成功し、新しいリソースが作成されました。</li>
-<li><a href="202.html">202 Accepted</a> 📩 リクエストは受け付けられましたが、処理はまだ完了していません。</li>
-<li><a href="203.html">203 Non-Authoritative Information</a> 🗞️ 返された情報は、元のサーバーから直接得られたものではありません。</li>
-<li><a href="204.html">204 No Content</a> 📭 リクエストは成功しましたが、返す本文はありません。</li>
-<li><a href="205.html">205 Reset Content</a> 🧹 リクエストは成功しました。クライアント側の入力画面などをリセットします。</li>
-<li><a href="206.html">206 Partial Content</a> 🧩 リソースの一部分だけを返しています。</li>
-<li><a href="207.html">207 Multi-Status</a> 📋 複数の処理結果をまとめて返しています。</li>
-<li><a href="208.html">208 Already Reported</a> 🔁 その情報は、すでに別の場所で報告済みです。</li>
-<li><a href="226.html">226 IM Used</a> 🧮 差分処理などを適用した結果を返しています。</li>
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Monaco', 'Courier New', monospace;
+      transition: background-color 0.3s, color 0.3s;
+    }
 
-<li><a href="300.html">300 Multiple Choices</a> 🧭 リクエストに対して、複数の候補があります。</li>
-<li><a href="301.html">301 Moved Permanently</a> 🏠 リソースは恒久的に別のURLへ移動しました。</li>
-<li><a href="302.html">302 Found</a> 🚧 リソースは一時的に別のURLにあります。</li>
-<li><a href="303.html">303 See Other</a> 👀 別のURLをGETメソッドで参照してください。</li>
-<li><a href="304.html">304 Not Modified</a> ♻️ リソースは前回取得したときから変更されていません。キャッシュを利用できます。</li>
-<li><a href="305.html">305 Use Proxy</a> 🧱 指定されたプロキシを使ってアクセスする必要があります。</li>
-<li><a href="306.html">306 Unused</a> 💤 以前は使われていましたが、現在は使われていないステータスコードです。</li>
-<li><a href="307.html">307 Temporary Redirect</a> ↪️ 一時的に別のURLへリダイレクトします。HTTPメソッドは変更しません。</li>
-<li><a href="308.html">308 Permanent Redirect</a> 🔀 恒久的に別のURLへリダイレクトします。HTTPメソッドは変更しません。</li>
+    .container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+    }
 
-<li><a href="400.html">400 Bad Request</a> 😵 リクエストの構文や内容に誤りがあり、サーバーは処理できません。</li>
-<li><a href="401.html">401 Unauthorized</a> 🔐 アクセスするには認証が必要です。</li>
-<li><a href="402.html">402 Payment Required</a> 💸 将来的な支払い処理のために予約されているステータスコードです。</li>
-<li><a href="403.html">403 Forbidden</a> ⛔ アクセス権限がないため、リクエストは拒否されました。</li>
-<li><a href="404.html">404 Not Found</a> 🐈 要求されたリソースは見つかりませんでした。</li>
-<li><a href="405.html">405 Method Not Allowed</a> 🚫 対象リソースでは、そのHTTPメソッドは使えません。</li>
-<li><a href="406.html">406 Not Acceptable</a> 🙅 クライアントが受け入れ可能な形式では、レスポンスを返せません。</li>
-<li><a href="407.html">407 Proxy Authentication Required</a> 🧱🔐 プロキシサーバーでの認証が必要です。</li>
-<li><a href="408.html">408 Request Timeout</a> ⏰ クライアントからのリクエスト送信が、制限時間内に完了しませんでした。</li>
-<li><a href="409.html">409 Conflict</a> ⚔️ リクエストの内容が、現在のリソースの状態と競合しています。</li>
-<li><a href="410.html">410 Gone</a> 👻 要求されたリソースは恒久的に利用できなくなっています。</li>
-<li><a href="411.html">411 Length Required</a> 📏 Content-Lengthヘッダーが必要です。</li>
-<li><a href="412.html">412 Precondition Failed</a> 📌 リクエストで指定された前提条件を満たしていません。</li>
-<li><a href="413.html">413 Content Too Large</a> 🐘 リクエスト本文が大きすぎるため、サーバーは処理できません。</li>
-<li><a href="414.html">414 URI Too Long</a> 🐍 リクエストURIが長すぎるため、サーバーは処理できません。</li>
-<li><a href="415.html">415 Unsupported Media Type</a> 📦 リクエスト本文のメディア形式に、サーバーは対応していません。</li>
-<li><a href="416.html">416 Range Not Satisfiable</a> 🎯 指定された範囲のデータを返せません。</li>
-<li><a href="417.html">417 Expectation Failed</a> 🤔 Expectヘッダーで求められた条件を満たせませんでした。</li>
-<li><a href="418.html">418 Unused</a> 🫖 現在は使われていないステータスコードです。</li>
-<li><a href="421.html">421 Misdirected Request</a> 🧭❌ リクエストは、処理できないサーバーに送られています。</li>
-<li><a href="422.html">422 Unprocessable Content</a> 🧠 リクエストの構文は正しいものの、内容の意味を処理できません。</li>
-<li><a href="423.html">423 Locked</a> 🔒 対象リソースはロックされています。</li>
-<li><a href="424.html">424 Failed Dependency</a> 🧱 依存している別の処理が失敗したため、このリクエストも処理できません。</li>
-<li><a href="425.html">425 Too Early</a> 🐣 リプレイ攻撃の危険があるため、サーバーはこのリクエストを処理しません。</li>
-<li><a href="426.html">426 Upgrade Required</a> ⬆️ 別のプロトコルへアップグレードする必要があります。</li>
-<li><a href="428.html">428 Precondition Required</a> 📋 リクエストには前提条件を含める必要があります。</li>
-<li><a href="429.html">429 Too Many Requests</a> 🚦 短時間に送信されたリクエストが多すぎます。</li>
-<li><a href="431.html">431 Request Header Fields Too Large</a> 🧾 リクエストヘッダーが大きすぎるため、サーバーは処理できません。</li>
-<li><a href="451.html">451 Unavailable For Legal Reasons</a> ⚖️ 法的な理由により、リソースを提供できません。</li>
+    .status-code {
+      font-size: 240px;
+      font-weight: 900;
+      letter-spacing: 20px;
+      text-align: center;
+      user-select: none;
+      cursor: text;
+      transition: all 0.3s;
+      outline: none;
+    }
 
-<li><a href="500.html">500 Internal Server Error</a> 💥 サーバー内部で予期しないエラーが発生しました。</li>
-<li><a href="501.html">501 Not Implemented</a> 🧰 サーバーには、リクエストを処理するための機能が実装されていません。</li>
-<li><a href="502.html">502 Bad Gateway</a> 🚪💥 ゲートウェイまたはプロキシが、上流サーバーから不正な応答を受け取りました。</li>
-<li><a href="503.html">503 Service Unavailable</a> 🚧 サーバーは一時的にリクエストを処理できない状態です。</li>
-<li><a href="504.html">504 Gateway Timeout</a> ⏳ ゲートウェイまたはプロキシが、上流サーバーから時間内に応答を受け取れませんでした。</li>
-<li><a href="505.html">505 HTTP Version Not Supported</a> 📜 サーバーは、リクエストで使われたHTTPバージョンに対応していません。</li>
-<li><a href="506.html">506 Variant Also Negotiates</a> 🔁 サーバーのコンテンツネゴシエーション設定に問題があります。</li>
-<li><a href="507.html">507 Insufficient Storage</a> 🗄️ サーバーは、リクエストを完了するために必要な保存領域を確保できません。</li>
-<li><a href="508.html">508 Loop Detected</a> 🔄 サーバーは、処理中に無限ループを検出しました。</li>
-<li><a href="510.html">510 Not Extended</a> 🧓 リクエストを処理するには、必要な拡張情報が不足しています。</li>
-<li><a href="511.html">511 Network Authentication Required</a> 📶🔐 ネットワークへアクセスするには認証が必要です。</li>
-</ul>
+    .status-code:hover {
+      filter: brightness(1.1);
+    }
+
+    .status-code:active {
+      transform: scale(0.98);
+    }
+
+    .tip {
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+      max-width: 600px;
+      padding: 0 20px;
+      min-height: 30px;
+      transition: opacity 0.2s;
+    }
+
+    .http-status {
+      font-size: 14px;
+      opacity: 0.85;
+      letter-spacing: 0;
+    }
+
+    body.status-1 { background-color: #00bcd4; color: #fff; }
+    body.status-2 { background-color: #4caf50; color: #fff; }
+    body.status-3 { background-color: #2196f3; color: #fff; }
+    body.status-4 { background-color: #ff9800; color: #fff; }
+    body.status-5 { background-color: #f44336; color: #fff; }
+  </style>
+</head>
+<body class="status-2">
+  <div class="container">
+    <div class="status-code" contenteditable="true" spellcheck="false" inputmode="numeric">200</div>
+    <div class="tip">200 OK - リクエストは成功しました</div>
+    <div class="http-status">HTTP/1.1 200 OK</div>
+  </div>
+
+  <script>
+    const statusCodeElement = document.querySelector('.status-code');
+    const tipElement = document.querySelector('.tip');
+    const httpStatusElement = document.querySelector('.http-status');
+
+    function bodyClassForStatus(status) {
+      const first = String(status)[0];
+      if ('12345'.includes(first)) return `status-${first}`;
+      return 'status-4';
+    }
+
+    function normalizeCode(raw) {
+      const text = String(raw).replace(/\D/g, '');
+      if (text.length >= 3) return text.slice(-3);
+      return text;
+    }
+
+    function getCodeFromPath() {
+      const path = window.location.pathname.replace(/\/$/, '');
+      const segments = path.split('/').filter(Boolean);
+      const last = segments[segments.length - 1];
+      if (/^\d{3}$/.test(last)) return last;
+
+      const fileMatch = window.location.pathname.match(/(\d{3})\.html$/);
+      if (fileMatch) return fileMatch[1];
+
+      return '200';
+    }
+
+    function getUrlForCode(code) {
+      const path = window.location.pathname;
+      if (/^\d{3}\.html$/.test(path.split('/').pop() || '')) {
+        return code + '.html';
+      }
+      return '/' + code;
+    }
+
+    function applyPayload(payload, httpStatus) {
+      const code = payload.code;
+      statusCodeElement.textContent = code;
+      document.body.className = bodyClassForStatus(httpStatus);
+      tipElement.textContent = `${httpStatus} ${payload.phrase} - ${payload.description}`;
+      httpStatusElement.textContent = `HTTP/1.1 ${httpStatus} ${payload.phrase}`;
+      document.title = `HTTP ${httpStatus}`;
+      return code;
+    }
+
+    let lastNavigatedCode = getCodeFromPath();
+    let lastHttpStatus = 200;
+    let lastPayload = null;
+    let navigateSeq = 0;
+
+    async function resolveFromServer(code, { updateHistory = true } = {}) {
+      code = normalizeCode(code);
+      if (code.length !== 3) return;
+
+      const seq = ++navigateSeq;
+      tipElement.style.opacity = '0.6';
+
+      try {
+        const res = await fetch(`/api/${code}`);
+        const payload = await res.json();
+        if (seq !== navigateSeq) return;
+
+        const httpStatus = res.status;
+        applyPayload(payload, httpStatus);
+        lastNavigatedCode = code;
+        lastHttpStatus = httpStatus;
+        lastPayload = payload;
+
+        if (updateHistory) {
+          const url = getUrlForCode(code);
+          history.pushState({ code, httpStatus, payload }, '', url);
+        }
+      } catch {
+        if (seq !== navigateSeq) return;
+        document.body.className = bodyClassForStatus(code);
+        tipElement.textContent = `${code} - サーバーに接続できません`;
+        httpStatusElement.textContent = 'HTTP/1.1 — —';
+      } finally {
+        if (seq === navigateSeq) {
+          tipElement.style.opacity = '1';
+        }
+      }
+    }
+
+    function initFromUrl() {
+      const fallback = {
+        code: getCodeFromPath(),
+        status: 200,
+        phrase: 'OK',
+        description: 'リクエストは成功しました',
+      };
+      const initial = window.__INITIAL__ || fallback;
+      const httpStatus = initial.status ?? fallback.status;
+      const code = applyPayload(initial, httpStatus);
+      lastNavigatedCode = code;
+      lastHttpStatus = httpStatus;
+      lastPayload = initial;
+
+      const pathMatch = window.location.pathname.match(/\/(\d{3})\/?$/);
+      if (pathMatch) {
+        history.replaceState({ code, httpStatus, payload: initial }, '', getUrlForCode(code));
+      } else {
+        history.replaceState({ code, httpStatus, payload: initial }, '', window.location.pathname);
+      }
+    }
+
+    statusCodeElement.addEventListener('input', () => {
+      let code = normalizeCode(statusCodeElement.textContent);
+      if (code.length > 3) code = code.slice(-3);
+
+      if (code !== statusCodeElement.textContent) {
+        statusCodeElement.textContent = code;
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(statusCodeElement);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+
+      if (code.length === 3 && code !== lastNavigatedCode) {
+        resolveFromServer(code);
+      }
+    });
+
+    statusCodeElement.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        resolveFromServer(statusCodeElement.textContent);
+        statusCodeElement.blur();
+      }
+    });
+
+    statusCodeElement.addEventListener('blur', () => {
+      const code = normalizeCode(statusCodeElement.textContent);
+      if (code.length !== 3 && lastPayload) {
+        applyPayload(lastPayload, lastHttpStatus);
+      }
+    });
+
+    statusCodeElement.addEventListener('click', () => {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(statusCodeElement);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    });
+
+    window.addEventListener('popstate', (e) => {
+      const state = e.state;
+      if (state?.payload) {
+        applyPayload(state.payload, state.httpStatus);
+        lastNavigatedCode = state.code;
+        lastHttpStatus = state.httpStatus;
+        lastPayload = state.payload;
+        return;
+      }
+      resolveFromServer(getCodeFromPath(), { updateHistory: false });
+    });
+
+    initFromUrl();
+  </script>
 </body>
 </html>
