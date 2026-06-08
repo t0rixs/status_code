@@ -16,7 +16,7 @@ TEMPLATE = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTTP {status}</title>
   <link rel="stylesheet" href="style.css">
-  <script>window.__STATUS_CODE__='{code}';</script>
+  <script>window.__STATIC_SITE__=true;window.__STATUS_CODE__='{code}';</script>
 </head>
 <body class="status-{class_digit}">
   <div class="container">

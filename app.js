@@ -14,9 +14,28 @@ function normalizeCode(raw) {
   return text;
 }
 
+function isStaticHost() {
+  const host = window.location.hostname;
+  return host.endsWith('github.io') || host.endsWith('.pages.dev');
+}
+
 function isStandaloneMode() {
+  if (window.__STATIC_SITE__ === true) return true;
   if (window.location.protocol === 'file:') return true;
-  return /\.html$/i.test(window.location.pathname);
+  if (/\.html$/i.test(window.location.pathname)) return true;
+  if (isStaticHost()) return true;
+  return false;
+}
+
+function getPageBasePath() {
+  const path = window.location.pathname;
+  if (/\.html$/i.test(path)) {
+    return path.replace(/[^/]+$/, '');
+  }
+  if (!path.endsWith('/')) {
+    return `${path}/`;
+  }
+  return path;
 }
 
 function getCodeFromPath() {
@@ -38,7 +57,9 @@ function getCodeFromPath() {
 
 function getUrlForCode(code) {
   if (isStandaloneMode()) {
-    return code === '200' ? 'index.html' : `${code}.html`;
+    const base = getPageBasePath();
+    const file = code === '200' ? 'index.html' : `${code}.html`;
+    return `${base}${file}`;
   }
   return code === '200' && window.location.pathname.match(/^\/?$/) ? '/' : `/${code}`;
 }
@@ -111,6 +132,11 @@ async function resolveFromServer(code, { updateHistory = true } = {}) {
 
   try {
     const res = await fetch(`${apiBase}/api/${code}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) throw new Error('Not JSON');
+
     const payload = await res.json();
     if (seq !== navigateSeq) return;
 
