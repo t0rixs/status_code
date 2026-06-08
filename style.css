@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Monaco', 'Courier New', monospace;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+.status-code {
+  font-size: 240px;
+  font-weight: 900;
+  letter-spacing: 20px;
+  text-align: center;
+  user-select: none;
+  cursor: text;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.status-code:hover {
+  filter: brightness(1.1);
+}
+
+.status-code:active {
+  transform: scale(0.98);
+}
+
+.tip {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 600px;
+  padding: 0 20px;
+  min-height: 30px;
+  transition: opacity 0.2s;
+}
+
+.http-status {
+  font-size: 14px;
+  opacity: 0.85;
+  letter-spacing: 0;
+}
+
+body.status-1 { background-color: #00bcd4; color: #fff; }
+body.status-2 { background-color: #4caf50; color: #fff; }
+body.status-3 { background-color: #2196f3; color: #fff; }
+body.status-4 { background-color: #ff9800; color: #fff; }
+body.status-5 { background-color: #f44336; color: #fff; }

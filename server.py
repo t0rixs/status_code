@@ -127,10 +127,10 @@ class PoopStatusHandler(BaseHTTPRequestHandler):
 
     def serve_puzzle(self, status_key: str):
         http_code = http_status_for_code(status_key)
-        html = self.load_html_file('puzzle.html')
+        html = self.load_html_file('index.html')
         payload = json.dumps(status_payload(status_key), ensure_ascii=False)
         inject = f'<script>window.__INITIAL__={payload};</script>'
-        html = html.replace('</head>', inject + '</head>', 1)
+        html = html.replace('<script src="status-data.js">', inject + '\n  <script src="status-data.js">', 1)
 
         self.send_response(http_code)
         self.send_header('Content-type', 'text/html; charset=utf-8')
